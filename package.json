@@ -1,6 +1,6 @@
 {
   "name": "dsh-context-mode-adapter",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Context Mode DSH插件:内置ctx沙箱工具与 Hook 路由拦截,节省会话上下文空间",
   "author": "claw",
   "license": "MIT",

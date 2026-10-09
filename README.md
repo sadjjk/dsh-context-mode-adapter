@@ -1,52 +1,43 @@
 # dsh-context-mode-adapter
 
-DeepSeek Harness 插件：以独立插件形式接入 [context-mode](https://github.com/mksglu/context-mode)，实现工具输出 sandbox 化与上下文节省。
+[context-mode](https://github.com/mksglu/context-mode) 没有官方 DSH 插件——本仓库补上这个空缺：把 context-mode 的沙箱工具与 hook 路由接入 DeepSeek Harness（DSH），实现会话上下文节省。
 
-## 功能
+## 它做什么
 
-- **工具层**：通过 `dsh-mcp-client` 接入 context-mode stdio MCP server，暴露 11 个 `mcp__context-mode__ctx_*` 工具（ctx_execute / ctx_batch_execute / ctx_index / ctx_search 等）
-- **hook 层**：进程内 import context-mode 的 routing/session API，订阅 DSH cordis 工具事件，实现 PreToolUse 硬拦截（重定向大输出工具到 sandbox）+ PostToolUse 落库 + 会话连续性（PreCompact 快照 + SessionStart 恢复）
-- **设置**：插件页可展开行，3 项可配（context-mode 路径自动检测 / 存储根 / 工具超时）
+| 层 | 能力 |
+|---|---|
+| 工具 | 11 个 `ctx_*` 工具进程内注册：`ctx_execute` 沙箱执行只回摘要、`ctx_index`/`ctx_search` FTS5 知识库、`ctx_batch_execute` 并行批量、`ctx_fetch_and_index` 网页抓取入库；大输出原文不进对话 |
+| hook | 工具调用前置硬拦截（引导大输出走沙箱）、每轮 routing block 注入（presence 窗口防重）、工具结果落库、compaction 快照续接 |
+| 设置卡 | 接入状态展示、doctor 一键验证、工具启停开关 |
 
-## 前置依赖
+## 与自带 openclaw adapter 的区别
 
-- context-mode 全局安装：`npm install -g context-mode`
-- DSH desktop/web profile
+context-mode 自带 openclaw adapter（ELv2 许可内），没有 DSH 对应实现，两者接入方式不同：
+
+| | openclaw adapter | 本插件（DSH） |
+|---|---|---|
+| 工具执行 | 11 个工具为 stub 占位，不执行；真实执行依赖外挂独立 stdio MCP server | 宿主进程内直调核心 handler，零额外子进程 |
+| 事件接入 | openclaw 事件总线 | DSH cordis 事件（tools/execute、agent/pre-step、compaction/start） |
+| 设置界面 | 无 | DSH 设置卡 |
 
 ## 安装
 
-```bash
-# 1. 构建插件
-pnpm install
-pnpm build
-
-# 2. 注册到 DSH profile（link 到 node_modules）
-pnpm register            # 默认 desktop profile
-# 或: bash scripts/register.sh web
-
-# 3. 重启 DSH，验证
-dsh --dump-config | grep -E 'mcp-context-mode|dsh-context-mode-adapter'
-```
-
-重启后在 DSH 会话中应可调用 `mcp__context-mode__ctx_stats` 等工具。
-
-## 运行时验证
+前置：全局安装 context-mode。
 
 ```bash
-node scripts/verify-runtime.mjs   # context-mode doctor + better-sqlite3 + API 可解析
-node scripts/compat-check.mjs     # context-mode 升级后 API 签名回归检测
+npm install -g context-mode
 ```
 
-## 配置
+DSH 桌面版：插件管理 → 添加插件 → 输入仓库地址 `https://github.com/sadjjk/dsh-context-mode-adapter` → 确认。
 
-插件页 → Context Mode Bridge 可展开行，3 项：
+![在 DSH 桌面版添加插件](https://webp.sadjjk.cn/dsh-context-mode-adapter/2026-10-09-install.jpg)
 
-| 设置 | 默认 | 说明 |
-|------|------|------|
-| context-mode 可执行路径 | 自动检测 | stdio MCP server 启动命令，首次自动检测填充 |
-| 存储根目录 | `~/.dsh/context-mode` | context-mode sessions/content/索引落点 |
-| 工具调用超时(ms) | 60000 | 单次 callTool 超时 |
+## 设置
+
+插件页 → Context Mode Bridge：显示 context-mode 检测路径与接入状态，可 doctor 验证、按工具启停。
+
+![插件设置卡](https://webp.sadjjk.cn/dsh-context-mode-adapter/2026-10-09-settings.jpg)
 
 ## 许可
 
-本插件代码按其 LICENSE 发布。context-mode 本体为 Elastic License 2.0（ELv2），本插件仅 import 其 API，不修改其源码。
+本插件按 LICENSE 发布；context-mode 本体为 Elastic License 2.0（ELv2），本插件仅 import 其 API，不修改其源码。

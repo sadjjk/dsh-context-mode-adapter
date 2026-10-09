@@ -6,7 +6,7 @@
   "settings.toolCallTimeoutMs": "Tool call timeout (ms)",
   "settings.detect": "Auto-detect",
   "settings.detected": "Detected: {path}",
-  "settings.notDetected": "context-mode not detected; confirm npm install -g context-mode",
+  "settings.notDetected": "context-mode not detected; run npm install -g context-mode and restart",
   "settings.doctor": "Verify (context-mode doctor)",
   "settings.doctorOk": "doctor passed",
   "settings.doctorFail": "doctor has warnings",
