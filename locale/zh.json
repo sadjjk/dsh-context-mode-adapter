@@ -1,0 +1,14 @@
+{
+  "settings.title": "Context Mode Bridge",
+  "settings.desc": "context-mode 接入状态（只读，改值编辑 cordis.patch.yml）",
+  "settings.contextModePath": "context-mode 可执行路径",
+  "settings.storageRoot": "存储根目录",
+  "settings.toolCallTimeoutMs": "工具调用超时(ms)",
+  "settings.detect": "自动检测",
+  "settings.detected": "检测到：{path}",
+  "settings.notDetected": "未检测到 context-mode，请确认已 npm install -g context-mode",
+  "settings.doctor": "验证（context-mode doctor）",
+  "settings.doctorOk": "doctor 通过",
+  "settings.doctorFail": "doctor 有告警",
+  "settings.editHint": "改值需手动编辑 cordis.patch.yml 的 mcp-context-mode 行后重启 DSH"
+}

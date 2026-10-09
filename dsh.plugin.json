@@ -1,0 +1,7 @@
+{
+  "id": "dsh-context-mode-adapter",
+  "name": "Context Mode Adapter",
+  "description": "接入 context-mode MCP 工具层与 in-process hook 路由拦截，实现上下文 sandbox 化节省",
+  "version": "0.1.0",
+  "author": "claw"
+}

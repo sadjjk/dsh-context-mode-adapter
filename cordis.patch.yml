@@ -1,0 +1,7 @@
+# dsh-context-mode-adapter cordis patch
+# C2: 插件自身 — host half 订阅 DSH 工具/会话事件 + client half 设置 card
+# C1(MCP 工具层)已随 embedded 进程内注册模式移除(spec C7):
+# 11 个 ctx_* 工具改由 host half 经 ctx.tools.register 注册,不再经 dsh-mcp-client 挂 context-mode stdio server
+- insert:
+    - id: dsh-context-mode-adapter
+      name: dsh-context-mode-adapter

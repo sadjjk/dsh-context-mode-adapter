@@ -1,0 +1,77 @@
+{
+  "name": "dsh-context-mode-adapter",
+  "version": "0.1.0",
+  "description": "Context Mode DSH插件:内置ctx沙箱工具与 Hook 路由拦截,节省会话上下文空间",
+  "author": "claw",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": "^22.19.0 || >=24.0.0"
+  },
+  "main": "lib/index.js",
+  "types": "lib/types/host/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./lib/types/host/index.d.ts",
+      "default": "./lib/index.js"
+    },
+    "./client": {
+      "types": "./lib/types/client/index.d.ts",
+      "default": "./lib/client.js"
+    },
+    "./package.json": "./package.json",
+    "./locale/*.json": "./locale/*.json"
+  },
+  "files": [
+    "locale/*.json",
+    "lib/client.js",
+    "lib/index.js",
+    "cordis.patch.yml",
+    "dsh.plugin.json",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsdown && tsc -p tsconfig.types.json",
+    "watch": "tsdown --watch",
+    "assemble": "node scripts/assemble.mjs",
+    "release": "pnpm build && pnpm assemble",
+    "publish": "node scripts/publish.mjs",
+    "register": "bash scripts/register.sh",
+    "typecheck": "tsc --noEmit"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "inject": [
+        "@deepseek-ai/dsh-client-locale",
+        "@deepseek-ai/dsh-client-ui-settings"
+      ],
+      "platform": "web"
+    }
+  },
+  "peerDependencies": {
+    "@deepseek-ai/cordis": "^4.0.1",
+    "@deepseek-ai/dsh-client-ui-settings": ">=0.1.5-rc.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    },
+    "react-dom": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@deepseek-ai/schemastery": "^3.18.4",
+    "@types/node": "^22.10.0",
+    "@types/react": "^18.3.0",
+    "react": "^18.3.1",
+    "tsdown": "^0.12.0",
+    "typescript": "^5.9.0"
+  }
+}

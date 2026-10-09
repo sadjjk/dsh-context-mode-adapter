@@ -1,0 +1,14 @@
+{
+  "settings.title": "Context Mode Bridge",
+  "settings.desc": "context-mode integration status (read-only; edit cordis.patch.yml to change)",
+  "settings.contextModePath": "context-mode executable path",
+  "settings.storageRoot": "Storage root directory",
+  "settings.toolCallTimeoutMs": "Tool call timeout (ms)",
+  "settings.detect": "Auto-detect",
+  "settings.detected": "Detected: {path}",
+  "settings.notDetected": "context-mode not detected; confirm npm install -g context-mode",
+  "settings.doctor": "Verify (context-mode doctor)",
+  "settings.doctorOk": "doctor passed",
+  "settings.doctorFail": "doctor has warnings",
+  "settings.editHint": "To change values, edit the mcp-context-mode row in cordis.patch.yml and restart DSH"
+}
